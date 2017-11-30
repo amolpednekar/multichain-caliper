@@ -1,0 +1,17 @@
+version: "3"
+services:
+  multichain-daemon:
+    image: kunstmaan/base-multichain
+    environment:
+      - CHAINNAME=AMOLCHAIN
+      - NETWORK_PORT=5000
+      - RPC_PORT=4999
+      - PARAM_CONNECT='anyone-can-connect|true'
+      - PARAM_MINE='anyone-can-mine|true'
+      - PARAM_BLOCKTIME='target-block-time|30'.
+      #- RPC_USER=
+      #- RPC_PASSWORD=
+      #- RPC_ALLOW_IP=
+    volumes:
+      - ./runchain_new.sh:/root/runchain_new.sh
+    command: bash /root/runchain_new.sh
