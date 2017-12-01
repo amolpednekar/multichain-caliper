@@ -1,8 +1,8 @@
 var multichain = require("multichain-node")({
-		port: "4999",
+		port: "5999",
 		host: "10.80.39.8",
-		user: "rpcuser",
-		pass: "rpcpassword"
+		user: "multichainrpc",
+		pass: "7PMFo1HHWJAz9VE2BeNzwuX5YWBAD61vDJURShJuX6FL"
 	});
 	
 	multichain.getPeerInfo((err, info) => {

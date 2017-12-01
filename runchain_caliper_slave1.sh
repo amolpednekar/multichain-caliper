@@ -5,11 +5,11 @@ sleep 8
 
 echo "Start the chain"
 
-ip=`getent hosts masternode | awk -F' ' '{print $1}'`
-multichaind dockerchain@$ip:5000 -port=6000 -rpcport=5999 -printtoconsole -shrinkdebugfilesize
+# ip=`getent hosts masternode | awk -F' ' '{print $1}'`
+multichaind dockerchain@10.80.39.8:2000 -printtoconsole -shrinkdebugfilesize
 
 
-echo "Setup /root/.multichain/multichain.conf"
+echo "Setup1 /root/.multichain/multichain.conf"
 
 cat << EOF > /root/.multichain/$CHAINNAME/multichain.conf
 rpcuser=$RPC_USER

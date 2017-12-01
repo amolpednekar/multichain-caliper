@@ -66,4 +66,4 @@ fi
 
 cp /root/.multichain/$CHAINNAME/multichain.conf /root/.multichain/multichain.conf
 
-multichaind -txindex -shrinkdebugfilesize -printtoconsole $CHAINNAME  -port=5000 -rpcport=4999 autosubscribe
+multichaind -txindex -shrinkdebugfilesize -printtoconsole $CHAINNAME
