@@ -4,33 +4,36 @@ services:
     image: kunstmaan/base-multichain
     environment:
       - CHAINNAME=dockerchain
-      - PARAM_CONNECT='anyone-can-connect|true'
-      - PARAM_MINE='anyone-can-mine|true'
-      - RPC_USER=rpcuser
-      - RPC_PASSWORD=rpcpassword
-      - RPC_ALLOW_IP=172.27.0.0/16
     volumes:
       - ./runchain_caliper_master.sh:/root/runchain_new.sh
       - ./node-files/dockerchain:/root/.multichain
     command: bash /root/runchain_new.sh
     ports:
-        - "1000:7447"
-        - "999:8000"
-
+        - "1000:1447"
+        - "999:1448"
+        
   slavenode1:
     image: kunstmaan/base-multichain
     environment:
       - CHAINNAME=dockerchain
-      - RPC_USER=rpcuser
-      - RPC_PASSWORD=rpcpassword
-      - RPC_ALLOW_IP=172.27.0.0/16
-      - RPC_PORT=5999
     volumes:
       - ./runchain_caliper_slave1.sh:/root/runchain_new.sh
+      - ./multichain1.conf:/root/.multichain/dockerchain/multichain.conf
       - ./node-files/dockerchain-slave1:/root/.multichain
     command: bash /root/runchain_new.sh
     ports:
-        - "2000:7447"
-        - "1999:8000"
-    depends_on:
-      - masternode
+      - "2000:2447"
+      - "1999:2448"
+            
+  slavenode2:
+    image: kunstmaan/base-multichain
+    environment:
+      - CHAINNAME=dockerchain
+    volumes:
+      - ./runchain_caliper_slave2.sh:/root/runchain_new.sh
+      - ./multichain2.conf:/root/.multichain/dockerchain/multichain.conf
+      - ./node-files/dockerchain-slave2:/root/.multichain
+    command: bash /root/runchain_new.sh
+    ports:
+      - "3000:3447"
+      - "2999:3448"

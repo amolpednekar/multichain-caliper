@@ -6,12 +6,12 @@ fi
 
 # Fallback for the $NETWORK_PORT variable
 if [ -z "$NETWORK_PORT" ]; then
-    NETWORK_PORT=7447
+    NETWORK_PORT=1447
 fi
 
 # Fallback for the $RPC_PORT variable
 if [ -z "$RPC_PORT" ]; then
-    RPC_PORT=8000
+    RPC_PORT=1448
 fi
 
 # Fallback for the $RPC_USER variable
@@ -66,4 +66,4 @@ fi
 
 cp /root/.multichain/$CHAINNAME/multichain.conf /root/.multichain/multichain.conf
 
-multichaind -txindex -shrinkdebugfilesize -printtoconsole $CHAINNAME
+multichaind -txindex -shrinkdebugfilesize -printtoconsole $CHAINNAME autosubscribe

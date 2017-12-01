@@ -1,10 +1,14 @@
 version: "3"
 services:
-  masternode:
+  slavenode1:
     image: kunstmaan/base-multichain
+    environment:
+      - CHAINNAME=dockerchain
     volumes:
-      - ./node-files/amolchain-slave:/root/.multichain
-    command: bash multichaind AMOLCHAIN@10.80.39.8:5000 --port=6000 --rpcport=5999
+      - ./runchain_caliper_slave1.sh:/root/runchain_new.sh
+      - ./node-files/dockerchain-slave1:/root/.multichain
+      - ./multichain.conf:/root/.multichain/dockerchain/multichain.conf
+    command: bash /root/runchain_new.sh
     ports:
-        - "6000:6000"
-        - "5999:5999"
+        - "2000:5000"
+        - "1999:4999"
