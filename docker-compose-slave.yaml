@@ -1,0 +1,10 @@
+version: "3"
+services:
+  masternode:
+    image: kunstmaan/base-multichain
+    volumes:
+      - ./node-files/amolchain-slave:/root/.multichain
+    command: bash multichaind AMOLCHAIN@10.80.39.8:5000 --port=6000 --rpcport=5999
+    ports:
+        - "6000:6000"
+        - "5999:5999"
