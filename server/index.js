@@ -1,17 +1,68 @@
 participants = [{
+	port: "999",
+	host: "10.80.39.8",
+	user: "multichainrpc",
+	pass: "password"
+}, {
+	port: "1999",
+	host: "10.80.39.8",
+	user: "slave1",
+	pass: "slavepw1"
+}, {
+	port: "2999",
+	host: "10.80.39.8",
+	user: "slave2",
+	pass: "slavepw2"
 }]
 
+	var multichain = require("multichain-node")(participants[0]);
 
-var multichain = require("multichain-node")({
-		port: "2999",
-		host: "10.80.39.8",
-		user: "slave2",
-		pass: "slavepw2"
-	});
-	
+	//getChainInfo(multichain);
+	//createStream(multichain, "teststream1", true)
+	//publishItemToStream(multichain,"teststream1","amol","AB");
+	readItemFromStream(multichain, "teststream1", "amol");
+
+function getChainInfo(multichain) {
 	multichain.getInfo((err, info) => {
-    if(err){
-      throw err;
-    }
-    console.log(info);
-  });
+		if (err) {
+			throw err;
+		}
+		console.log(info);
+	})
+}
+
+function createStream(multichain, name, open) {
+	multichain.create({ type: "stream", name: name, open: open }, (err, success) => {
+		if (err) {
+			console.log("Error: ", err)
+			throw err;
+		}
+		console.log("Success: ", success);
+
+	})
+}
+
+function publishItemToStream(multichain, streamName, key, data) {
+	multichain.publish({ stream: streamName, key: key, data: data }, (err, success) => {
+		if (err) {
+			console.log("Error: ", err);
+			throw err;
+		}
+		console.log("Success: ", success);
+	})
+}
+
+function readItemFromStream(multichain, streamName, key) {
+	// multichain.subscribe({ stream: streamName }, (err, res) => {
+	// 	if (err) {
+	// 		console.log("Err", err);
+	// 	}
+		multichain.listStreamKeyItems({ stream: streamName, key: key }, (err, success) => {
+			if (err) {
+				console.log("Error: ", err);
+				throw err;
+			}
+			console.log("Success: ", success);
+		})
+	//});
+}

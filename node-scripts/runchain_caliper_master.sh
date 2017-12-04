@@ -6,12 +6,12 @@ fi
 
 # Fallback for the $NETWORK_PORT variable
 if [ -z "$NETWORK_PORT" ]; then
-    NETWORK_PORT=7447
+    NETWORK_PORT=1447
 fi
 
 # Fallback for the $RPC_PORT variable
 if [ -z "$RPC_PORT" ]; then
-    RPC_PORT=8000
+    RPC_PORT=1448
 fi
 
 # Fallback for the $RPC_USER variable
@@ -21,7 +21,7 @@ fi
 
 # Fallback for the $RPC_PASSWORD variable
 if [ -z "$RPC_PASSWORD" ]; then
-    RPC_PASSWORD="this-is-insecure-change-it"
+    RPC_PASSWORD="password"
 fi
 
 # Fallback for the $RPC_ALLOW_IP variable
@@ -39,7 +39,6 @@ if [ ! -d /root/.multichain/$CHAINNAME ]; then
     sed -i "s/^chain-name.*/chain-name = $CHAINNAME/" /root/.multichain/$CHAINNAME/params.dat
     sed -i "s/^chain-description.*/chain-description = MultiChain $CHAINNAME/" /root/.multichain/$CHAINNAME/params.dat
     sed -i "s/^anyone-can-connect.*/anyone-can-connect = true/" /root/.multichain/$CHAINNAME/params.dat
-    sed -i "s/^anyone-can-mine.*/anyone-can-mine = true/" /root/.multichain/$CHAINNAME/params.dat
 
     # Loop over all variables that start with PARAM_
     #   PARAM_BLOCKTIME='target-block-time|40';
@@ -67,4 +66,4 @@ fi
 
 cp /root/.multichain/$CHAINNAME/multichain.conf /root/.multichain/multichain.conf
 
-multichaind -txindex -shrinkdebugfilesize -printtoconsole $CHAINNAME autosubscribe
+multichaind -txindex -shrinkdebugfilesize -printtoconsole $CHAINNAME autosubscribe=streams

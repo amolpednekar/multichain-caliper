@@ -6,4 +6,4 @@ sleep 5
 echo "Start the chain"
 
 ip=`getent hosts masternode | awk -F' ' '{print $1}'`
-multichaind -port=3447 -rpcport=3448 -printtoconsole -shrinkdebugfilesize dockerchain@$ip:1447
+multichaind -port=2447 -rpcport=2448 -printtoconsole -shrinkdebugfilesize dockerchain@$ip:1447 autosubscribe=streams
