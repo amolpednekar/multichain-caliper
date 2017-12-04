@@ -15,12 +15,12 @@ participants = [{
 	pass: "slavepw2"
 }]
 
-	var multichain = require("multichain-node")(participants[0]);
+var multichain = require("multichain-node")(participants[1]);
 
-	//getChainInfo(multichain);
-	//createStream(multichain, "teststream1", true)
-	//publishItemToStream(multichain,"teststream1","amol","AB");
-	readItemFromStream(multichain, "teststream1", "amol");
+//getChainInfo(multichain);
+//createStream(multichain, "teststream1", true)
+//publishItemToStream(multichain,"teststream1","amol","AB");
+//readItemFromStream(multichain, "teststream1", "amol");
 
 function getChainInfo(multichain) {
 	multichain.getInfo((err, info) => {
@@ -53,16 +53,12 @@ function publishItemToStream(multichain, streamName, key, data) {
 }
 
 function readItemFromStream(multichain, streamName, key) {
-	// multichain.subscribe({ stream: streamName }, (err, res) => {
-	// 	if (err) {
-	// 		console.log("Err", err);
-	// 	}
-		multichain.listStreamKeyItems({ stream: streamName, key: key }, (err, success) => {
-			if (err) {
-				console.log("Error: ", err);
-				throw err;
-			}
-			console.log("Success: ", success);
-		})
-	//});
+	// subscribe not required, autosubscribe=streams set for multichaind
+	multichain.listStreamKeyItems({ stream: streamName, key: key }, (err, success) => {
+		if (err) {
+			console.log("Error: ", err);
+			throw err;
+		}
+		console.log("Success: ", success);
+	})
 }

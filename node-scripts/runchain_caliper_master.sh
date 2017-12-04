@@ -66,4 +66,4 @@ fi
 
 cp /root/.multichain/$CHAINNAME/multichain.conf /root/.multichain/multichain.conf
 
-multichaind -txindex -shrinkdebugfilesize -printtoconsole $CHAINNAME autosubscribe=streams
+multichaind $CHAINNAME -autosubscribe=streams
