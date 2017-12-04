@@ -1,10 +1,5 @@
 #!/bin/bash
 
-curl -sL https://deb.nodesource.com/setup_6.x | bash
-
-# Install Node.js from the Debian-based distributions repository
-apt-get install -y nodejs
-
 # Fallback for the $CHAINNAME variable
 if [ -z "$CHAINNAME" ]; then
     CHAINNAME='DockerChain'
@@ -75,5 +70,3 @@ cp /root/.multichain/$CHAINNAME/multichain.conf /root/.multichain/multichain.con
 chmod 777 /root/server/event-listener-websockets/script.sh
 
 multichaind $CHAINNAME -autosubscribe=streams -walletnotify="/root/server/event-listener-websockets/script.sh %s %c"
-
-# node /root/server/event-listener-websockets/start_listener.js

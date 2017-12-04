@@ -1,5 +1,5 @@
 FROM ubuntu:xenial
-MAINTAINER Kunstmaan
+MAINTAINER AMOL
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -17,6 +17,10 @@ RUN apt-get update \
         && cd /tmp \
         && rm -Rf multichain*
 
-RUN 
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash
+
+# Install Node.js from the Debian-based distributions repository
+
+RUN apt-get install -y nodejs
 
 CMD ["/bin/bash"]
