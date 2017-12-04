@@ -1,0 +1,14 @@
+version: "3"
+services:
+  masternode:
+    image: amolpednekar/multichain_node:v1
+    environment:
+      - CLIENT_IP=10.80.39.8
+    volumes:
+      - ../node-scripts/runchain_caliper_master.sh:/root/runchain.sh
+      - ../server:/root/server
+    # - ./node-files/dockerchain:/root/.multichain    PERSIST CHAIN DATA
+    command: bash /root/runchain.sh
+    ports:
+      - "1000:1000"
+      - "999:999"

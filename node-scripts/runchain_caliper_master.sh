@@ -7,17 +7,17 @@ fi
 
 # Fallback for the $NETWORK_PORT variable
 if [ -z "$NETWORK_PORT" ]; then
-    NETWORK_PORT=1447
+    NETWORK_PORT=1000
 fi
 
 # Fallback for the $RPC_PORT variable
 if [ -z "$RPC_PORT" ]; then
-    RPC_PORT=1448
+    RPC_PORT=999
 fi
 
 # Fallback for the $RPC_USER variable
 if [ -z "$RPC_USER" ]; then
-    RPC_USER="multichainrpc"
+    RPC_USER="username"
 fi
 
 # Fallback for the $RPC_PASSWORD variable
