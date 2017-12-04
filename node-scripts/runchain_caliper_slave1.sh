@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
-echo "Sleep for 5 seconds so the master node has initialised"
-sleep 5
+echo "Sleep for 90 seconds so the master node has initialised"
+sleep 120
 
 echo "Start the chain"
 
