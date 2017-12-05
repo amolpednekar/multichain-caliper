@@ -1,5 +1,6 @@
 version: "3"
-  slavenode-1:
+services:
+  slavenode1:
     image: amolpednekar/multichain_node:v1
     environment:
       - MASTER_NODE_IP=10.80.39.8
