@@ -10,5 +10,5 @@ services:
     #  - ./node-files/dockerchain:/root/.multichain
     command: bash /root/runchain.sh
     ports:
-      - "1000:1447"
-      - "999:1448"
+      - "1000:1000"
+      - "999:999"

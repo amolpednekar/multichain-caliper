@@ -1,13 +1,13 @@
 participants = [{
 	port: "999",
 	host: "10.80.39.8",
-	user: "multichainrpc",
+	user: "username",
 	pass: "password"
 }, {
 	port: "1999",
-	host: "10.80.39.8",
-	user: "slave1",
-	pass: "slavepw1"
+	host: "10.51.238.81",
+	user: "username",
+	pass: "password"
 }, {
 	port: "2999",
 	host: "10.80.39.8",
@@ -19,9 +19,14 @@ var multichain = require("multichain-node")(participants[0]);
 
 //getChainInfo(multichain);
 //createStream(multichain, "teststream1", true)
-publishItemToStream(multichain,"teststream1","amol","AB");
+//publishItemToStream(multichain,"teststream1","amol","AB");
 //readItemFromStream(multichain, "teststream1", "amol");
-
+multichain.listAddresses((err, info) => {
+	if (err) {
+		throw err;
+	}
+	console.log(info);
+})
 function getChainInfo(multichain) {
 	multichain.getInfo((err, info) => {
 		if (err) {

@@ -10,5 +10,5 @@ services:
       - ./server:/root/server
     command: bash /root/runchain.sh
     ports:
-      - "2000:2447"
-      - "1999:2448"
+      - "2000:2000"
+      - "1999:1999"

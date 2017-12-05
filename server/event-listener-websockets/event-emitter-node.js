@@ -1,6 +1,6 @@
 var client = require("socket.io-client");
 
-const ip = process.env.CLIENT_IP;
+const ip = process.env.LISTENER_IP;
 
 var socket = client.connect(ip+":3333");
 
