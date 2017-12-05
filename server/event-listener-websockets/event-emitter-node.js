@@ -2,8 +2,8 @@ var client = require("socket.io-client");
 
 const ip = process.env.LISTENER_IP;
 
-var socket = client.connect(ip+":3333");
-
+var socket = client.connect("http://"+ip+":3333");
+console.log("IP:",ip+":3333")
 console.log("Listener Triggered!");
 
 args = process.argv.slice(2);

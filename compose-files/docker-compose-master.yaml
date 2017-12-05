@@ -4,6 +4,7 @@ services:
     image: amolpednekar/multichain_node:v1
     environment:
       - CHAINNAME=dockerchain
+      - LISTENER_IP=10.80.39.8
     volumes:
       - ../node-scripts/runchain_caliper_master.sh:/root/runchain.sh
       - ../server:/root/server
