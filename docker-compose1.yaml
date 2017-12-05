@@ -1,0 +1,14 @@
+version: "3"
+services:
+  slavenode1:
+    image: amolpednekar/multichain_node:v1
+    environment:
+      - CHAINNAME=dockerchain
+    volumes:
+      - ./node-scripts/runchain_caliper_slave1.sh:/root/runchain.sh
+      - ./node-scripts/multichain_slave1.conf:/root/.multichain/dockerchain/multichain.conf
+      - ./server:/root/server
+    command: bash /root/runchain.sh
+    ports:
+      - "2000:2447"
+      - "1999:2448"
