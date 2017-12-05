@@ -18,8 +18,8 @@ participants = [{
 var multichain = require("multichain-node")(participants[0]);
 
 //getChainInfo(multichain);
-createStream(multichain, "teststream1", true)
-//publishItemToStream(multichain,"teststream1","amol","AB");
+//createStream(multichain, "teststream1", true)
+publishItemToStream(multichain,"teststream1","amol","AB");
 //readItemFromStream(multichain, "teststream1", "amol");
 multichain.listAddresses((err, info) => {
 	if (err) {
