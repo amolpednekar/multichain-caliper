@@ -1,2 +1,4 @@
 server/node_modules/
 node-files/
+caliper/initialcaliper/node_modules
+caliper/maincaliper/node_modules

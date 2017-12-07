@@ -1,0 +1,22 @@
+{
+  "blockchain": {
+    "type": "fabric",
+    "config": "./fabric.json"
+  },
+  "test": {
+    "clients": 1,
+    "rounds": [{
+        "cmd" : "open",
+        "txNumbAndTps" : [[5000,500], [5000,500], [5000,500]],
+        "arguments": {  "money": 10000 },
+        "callback" : "benchmark/simple/open.js"
+      }]
+  },
+  "monitor": {
+    "type": "docker",
+    "docker":{
+      "name": ["http://10.244.5.43:2375/orderer.example.com","http://10.244.5.45:2375/peer1.org2.example.com","http://10.244.5.44:2375/peer0.org2.example.com","http://10.244.5.42:2375/peer1.org1.example.com","http://10.244.5.41:2375/peer0.org1.example.com"]
+    },
+    "interval": 1
+  }
+}

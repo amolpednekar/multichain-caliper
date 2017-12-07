@@ -1,0 +1,19 @@
+{
+  "blockchain": {
+    "type": "multichain",
+    "config": "./multichain.json"
+  },
+  "test": {
+    "clients": 1,
+    "roundsconfig": {
+			"type":"2"
+	}
+  },
+  "monitor": {
+    "type": "docker",
+    "docker":{
+      "name": ["http://10.244.5.43:2375/masternode","http://10.244.5.45:2375/slavenode"]
+    },
+    "interval": 1
+  }
+}
