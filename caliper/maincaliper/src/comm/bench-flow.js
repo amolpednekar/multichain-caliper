@@ -426,6 +426,9 @@ function getResultTitle() {
 * @return {Array}, formatted result table's values
 */
 function getResultValue(r) {
+
+    let config = require(configPath);
+    
     var min = 1000000, max = 0, sum = 0;
     for(let v in r.throughput) {
         let t = r.throughput[v];
@@ -456,7 +459,7 @@ function getResultValue(r) {
 //    row.push(max.toString() + ' tps');
 //    row.push(min.toString() + ' tps');
     (r.valid.max === r.valid.min) ? row.push(r.succ + ' tps') : row.push(((r.succ / (r.valid.max - r.valid.min)).toFixed(0)) + ' tps');
-    if(r.opt!='query'){
+    if(r.opt!='query' && config.type=="fabric" ){
 		row.push((r.delayC2E.sum / r.succ).toFixed(4) + ' s');
 		row.push((r.delayE2O.sum / r.succ).toFixed(4) + ' s');
 		row.push((r.delayO2V.sum / r.succ).toFixed(4) + ' s');

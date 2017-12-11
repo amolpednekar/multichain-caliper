@@ -18,13 +18,17 @@ var Blockchain = class {
         var args = require(configPath).blockchain;
         this.bcType = args.type;
         this.bcObj = null;
-        if(this.bcType === 'fabric') {
+        if (this.bcType === 'fabric') {
             var fabric = require('../fabric/fabric.js');
             this.bcObj = new fabric(path.join(path.dirname(configPath), args.config));
         }
-        else if(this.bcType === 'sawtooth') {
+        else if (this.bcType === 'sawtooth') {
             var sawtooth = require('../sawtooth/sawtooth.js')
             this.bcObj = new sawtooth(path.join(path.dirname(configPath), args.config));
+        } else if (this.bcType === 'multichain') {
+            var multichain = require('../multichain/multichain.js')
+            console.log("path", path.join(path.dirname(configPath), args.config))
+            this.bcObj = new multichain(path.join(path.dirname(configPath), args.config));
         }
         else {
             throw new Error('Unknown blockchain type, ' + this.bcType);
@@ -67,15 +71,15 @@ var Blockchain = class {
         return this.bcObj.getContext(name);
     }
 
-	 /**
-    * get result confirmation that will be used to check if the transaction invoked are successfully committed or not
-    * @result {string}, result after invoking all transaction
-    * @return {Promise.resolve(context)}
-    */
-	getResultConfirmation(bcContext,result) {
-        return this.bcObj.getResultConfirmation(bcContext,result);
+    /**
+   * get result confirmation that will be used to check if the transaction invoked are successfully committed or not
+   * @result {string}, result after invoking all transaction
+   * @return {Promise.resolve(context)}
+   */
+    getResultConfirmation(bcContext, result) {
+        return this.bcObj.getResultConfirmation(bcContext, result);
     }
-	
+
     /**
     * release the system context
     * @return {Promise}
@@ -104,12 +108,12 @@ var Blockchain = class {
     *         }
     */
     invokeSmartContract(context, contractID, contractVer, args, timeout) {
-	
-        if(typeof timeout !== 'number' || timeout < 0) {
+
+        if (typeof timeout !== 'number' || timeout < 0) {
             return this.bcObj.invokeSmartContract(context, contractID, contractVer, args, 120);
         }
         else {
-			//console.log("invoke smart: ",args + " end")
+            //console.log("invoke smart: ",args + " end")
             return this.bcObj.invokeSmartContract(context, contractID, contractVer, args, timeout);
         }
     }
@@ -118,8 +122,8 @@ var Blockchain = class {
     * * perform a 'query' transaction to get state from the ledger
     * @return {Promsie}, same format as invokeSmartContract's returning
     */
-    queryState(context, contractID, contractVer, key,fname) {
-        return this.bcObj.queryState(context, contractID, contractVer, key,fname);
+    queryState(context, contractID, contractVer, key, fname) {
+        return this.bcObj.queryState(context, contractID, contractVer, key, fname);
     }
 
     /**
@@ -140,65 +144,66 @@ var Blockchain = class {
     */
     // TODO: should be moved to a dependent 'analyser' module in which to do all result analysing work
     getDefaultTxStats(results) {
-       
-	    var fields = ['transaction_id','send_time','valid_time','delay']
-		var result = []
-	    var succ = 0, fail = 0, delay = 0;
+
+        console.log("Results: ", results.length)
+        var fields = ['transaction_id', 'send_time', 'valid_time', 'delay']
+        var result = []
+        var succ = 0, fail = 0, delay = 0;
         var minValid, maxValid, minCreate, maxCreate;
         var minDelay = 100000, maxDelay = 0;
         var throughput = {};
-        for(let i = 0 ; i < results.length ; i++) {
-            
-			let stat   = results[i];
+        for (let i = 0; i < results.length; i++) {
+
+            let stat = results[i];
             let create = stat['time_create'];
 
-            if(typeof minCreate === 'undefined') {
+            if (typeof minCreate === 'undefined') {
                 minCreate = create;
                 maxCreate = create;
             }
             else {
-                if(create < minCreate) {
+                if (create < minCreate) {
                     minCreate = create;
                 }
-                if(create > maxCreate) {
+                if (create > maxCreate) {
                     maxCreate = create;
                 }
             }
 
-            if(stat.status === 'success') {
+            if (stat.status === 'success') {
                 succ++;
                 let valid = stat['time_valid'];
-                let d     = valid - create;
-				var obj = {
-					'transaction_id':stat['id'],
-					'send_time':create,
-					'valid_time':valid,
-					'delay':d
-				}
-				result.push(obj);
-                if(typeof minValid === 'undefined') {
+                let d = valid - create;
+                var obj = {
+                    'transaction_id': stat['id'],
+                    'send_time': create,
+                    'valid_time': valid,
+                    'delay': d
+                }
+                result.push(obj);
+                if (typeof minValid === 'undefined') {
                     minValid = valid;
                     maxValid = valid;
                 }
                 else {
-                    if(valid < minValid) {
+                    if (valid < minValid) {
                         minValid = valid;
                     }
-                    if(valid > maxValid) {
+                    if (valid > maxValid) {
                         maxValid = valid;
                     }
                 }
 
                 delay += d;
-                if(d < minDelay) {
+                if (d < minDelay) {
                     minDelay = d;
                 }
-                if(d > maxDelay) {
+                if (d > maxDelay) {
                     maxDelay = d;
                 }
 
                 let idx = Math.round(valid).toString();
-                if(typeof throughput[idx] === 'undefined') {
+                if (typeof throughput[idx] === 'undefined') {
                     throughput[idx] = 1;
                 }
                 else {
@@ -209,20 +214,20 @@ var Blockchain = class {
                 fail++;
             }
         }
-		
-		var output = '\n\n' + json2csv({ data: result, fields: fields }) +'\n\n';
-		fs.appendFileSync(os.hostname()+'_transactions_summary.csv', output);
+
+        var output = '\n\n' + json2csv({ data: result, fields: fields }) + '\n\n';
+        fs.appendFileSync(os.hostname() + '_transactions_summary.csv', output);
 
         var stats = {
-            'succ' : succ,
-            'fail' : fail,
-            'create' : {'min' : minCreate, 'max' : maxCreate},
-            'valid'  : {'min' : minValid,  'max' : maxValid },
-            'delay'  : {'min' : minDelay,  'max' : maxDelay, 'sum' : delay },
-            'throughput' : throughput
+            'succ': succ,
+            'fail': fail,
+            'create': { 'min': minCreate, 'max': maxCreate },
+            'valid': { 'min': minValid, 'max': maxValid },
+            'delay': { 'min': minDelay, 'max': maxDelay, 'sum': delay },
+            'throughput': throughput
         };
 
-        if(this.bcObj.getDefaultTxStats !== 'undefined') {
+        if (this.bcObj.getDefaultTxStats !== 'undefined') {
             this.bcObj.getDefaultTxStats(stats, results);
         }
 

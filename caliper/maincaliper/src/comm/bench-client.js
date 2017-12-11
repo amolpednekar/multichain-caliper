@@ -64,7 +64,7 @@ function doTest(msg) {
             return Promise.all(promises);
         })
         .then( (result) => {
-			
+			//console.log("result: ",result)
 			console.log("result length: ",result.length)
 			if(msg.cmd!="quicksort" && msg.cmd!="query"){
 			
@@ -86,8 +86,9 @@ function doTest(msg) {
 			 
 		})
         .then( (out) => {
-		
+            console.log("reached out, getDefaultTxStats", bcResults.length)
             var stats = blockchain.getDefaultTxStats(bcResults);
+            console.log("stats", stats)
             if(msg.hasOwnProperty('out') && typeof out !== 'undefined') {
                 stats.out = { key: msg['out'], value : out};
             }
