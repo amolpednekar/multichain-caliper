@@ -1,0 +1,28 @@
+{
+  "blockchain": {
+    "type": "multichain",
+    "config": "./multichain.json"
+  },
+  "test": {
+    "clients": 1,
+    "rounds": [{
+        "cmd" : "open",
+        "txNumbAndTps" : [[1000,100]],
+        "arguments": {  "money": 10000 },
+        "callback" : "benchmark/simple/multichain-open.js",
+        "out" : "accounts"
+      },{
+        "cmd" : "query",
+        "txNumbAndTps" : [[1000,100]],
+        "arguments": {  "accounts":  "*#out" },
+        "callback" : "benchmark/simple/multichain-query.js"
+      }]
+  },
+  "monitor": {
+    "type": "docker",
+    "docker":{
+      "name": ["http://10.80.39.8:2375/masternode","http://10.80.39.8:2375/slavenode1"]
+    },
+    "interval": 1
+  }
+}

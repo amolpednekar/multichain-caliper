@@ -1,0 +1,20 @@
+{
+  "multichain": {
+    "network": [
+      {
+        "port": "999",
+        "host": "10.80.39.8",
+        "user": "username",
+        "pass": "password"
+      },
+      {
+        "port": "1999",
+        "host": "10.80.39.8",
+        "user": "username",
+        "pass": "password"
+      }],
+    "stream": {
+      "name": "mystream"
+    }
+  }
+}

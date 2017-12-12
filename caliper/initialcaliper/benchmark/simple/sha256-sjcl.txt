@@ -1,0 +1,15 @@
+var sjcl = require('sjcl');
+var sjcl_codec = require('sjcl-codec');
+var fs = require('fs')
+
+function bytesToBits(bytes) {
+	console.log("bytes to bits : ")
+	var temp =  sjcl_codec.bytes.toBits(bytes);
+//	console.log("bytes to bits finished : ",temp)
+	return temp;
+	
+};
+data = fs.readFileSync(process.argv[2])
+console.log("Hex: ",data.byteLength)
+var hex= sjcl_codec.hex.fromBits(new sjcl.hash.sha256().update(bytesToBits(data)).finalize());
+console.log(hex)
