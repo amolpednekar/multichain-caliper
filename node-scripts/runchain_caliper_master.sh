@@ -40,7 +40,7 @@ if [ ! -d /root/.multichain/$CHAINNAME ]; then
     sed -i "s/^chain-name.*/chain-name = $CHAINNAME/" /root/.multichain/$CHAINNAME/params.dat
     sed -i "s/^chain-description.*/chain-description = MultiChain $CHAINNAME/" /root/.multichain/$CHAINNAME/params.dat
     sed -i "s/^anyone-can-connect.*/anyone-can-connect = true/" /root/.multichain/$CHAINNAME/params.dat
-
+   
     # Loop over all variables that start with PARAM_
     #   PARAM_BLOCKTIME='target-block-time|40';
     #   PARAM_CONNECT='anyone-can-connect|true';

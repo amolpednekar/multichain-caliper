@@ -1,11 +1,12 @@
 version: "3"
 services:
   slavenode1:
+    container_name: slavenode1
     image: amolpednekar/multichain_node:v1
     environment:
       - CHAINNAME=dockerchain
       - MASTER_IP=10.80.39.8
-      - LISTENER_IP=10.51.238.81
+      - LISTENER_IP=10.80.39.8
     volumes:
       - ../node-scripts/runchain_caliper_slave.sh:/root/runchain.sh
       - ../node-scripts/multichain_slave.conf:/root/.multichain/dockerchain/multichain.conf

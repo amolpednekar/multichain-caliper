@@ -5,7 +5,7 @@ participants = [{
 	pass: "password"
 }, {
 	port: "1999",
-	host: "10.51.238.81",
+	host: "10.80.39.8",
 	user: "username",
 	pass: "password"
 }, {
@@ -15,18 +15,40 @@ participants = [{
 	pass: "slavepw2"
 }]
 
-var multichain = require("multichain-node")(participants[0]);
+var promisesArray = [];
 
+var multichain = require("multichain-node")(participants[0]);
+multichain.listStreamKeyItems({ stream: "mystream", key:"key1" }, (err, success) => {
+	if (err) {
+		console.log("Error: ", err);
+		//throw err;
+	}
+	console.log("Success: ", success);
+
+})
 //getChainInfo(multichain);
 //createStream(multichain, "teststream1", true)
-publishItemToStream(multichain,"teststream1","amol","AB");
-//readItemFromStream(multichain, "teststream1", "amol");
-multichain.listAddresses((err, info) => {
+// for (i = 0; i < 1000; i++) {
+// 	publishItemToStream(multichain, "mystream", "amol" + i, "AB");
+// }
+
+//readItemFromStream(multichain, "mystream", "amol");
+
+
+/* multichain.listStreams((err, info) => {
 	if (err) {
 		throw err;
 	}
 	console.log(info);
-})
+}); */
+// 	multichain = require("multichain-node")(participants[0]);
+// 	multichain.grant({addresses:info[0].address,permissions:"send"},(err, info2) =>{
+// 		if (err) {
+// 			throw err;
+// 		}
+// 		console.log(info2);
+// 	})
+// })
 function getChainInfo(multichain) {
 	multichain.getInfo((err, info) => {
 		if (err) {
@@ -59,11 +81,14 @@ function publishItemToStream(multichain, streamName, key, data) {
 
 function readItemFromStream(multichain, streamName, key) {
 	// subscribe not required, autosubscribe=streams set for multichaind
-	multichain.listStreamKeyItems({ stream: streamName, key: key }, (err, success) => {
-		if (err) {
-			console.log("Error: ", err);
-			throw err;
-		}
-		console.log("Success: ", success);
-	})
+	
+		multichain.listStreamItems({ stream: streamName }, (err, success) => {
+			if (err) {
+				console.log("Error: ", err);
+				//throw err;
+				return resolve1();
+			}
+			console.log("Success: ", success);
+			return reject1();
+		})
 }
