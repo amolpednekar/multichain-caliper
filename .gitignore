@@ -4,3 +4,4 @@ caliper/initialcaliper/node_modules
 caliper/maincaliper/node_modules
 caliper/maincaliper/benchmark/simple/*.json
 caliper/maincaliper/benchmark/simple/*.csv
+caliper/maincaliper/benchmark/simple/*.txt
