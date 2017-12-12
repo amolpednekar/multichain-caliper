@@ -71,7 +71,6 @@ function installSmartContract() {
 }
 
 function getContext(config_path) {
-
     var data = fs.readFileSync(config_path);
     fileData = new Buffer(data).toString('utf-8');
     fileData = JSON.parse(fileData);
@@ -88,60 +87,76 @@ function releaseContext(multichainObject) {
 
 function publishToStream(multichainObject, stream, args, timeout) {
     // generate random keys & publish
-   
-        var invoke_status = {
-            id: "",
-            status: 'created',
-            time_create: new Date().getTime() / 1000,
-            time_valid: 0,
-            time_endorse: 0,
-            time_order: 0,
-            result: null
-        };
- 
-        return sendDatatoStream(multichainObject, stream,args[0].key,args[0].data).then((txid)=>{
-            invoke_status.id = txid;
-            invoke_status.status = 'success';
-    
-           return Promise.resolve(invoke_status)
+    var invoke_status = {
+        id: "",
+        status: 'created',
+        time_create: new Date().getTime() / 1000,
+        time_valid: 0,
+        time_endorse: 0,
+        time_order: 0,
+        result: null
+    };
 
-        },(err)=>{
+    return sendDatatoStream(multichainObject, stream, args[0].key, args[0].data).then((txid) => {
+        invoke_status.id = txid;
+        invoke_status.status = 'success';
+        return Promise.resolve(invoke_status)
 
-            console.log("error in publishing data: ",err)
-            invoke_status.status = 'failed';
-            return Promise.resolve(invoke_status)
-        })
+    }, (err) => {
+        console.log("error in publishing data: ", err)
+        invoke_status.status = 'failed';
+        return Promise.resolve(invoke_status)
+    })
 }
 
-function sendDatatoStream(multichainObject, stream,key,data){
-
+function sendDatatoStream(multichainObject, stream, key, data) {
     return new Promise((resolve, reject) => {
-        
         multichainObject.publish({ stream: stream, key: key, data: data }, (err, success) => {
             if (err) {
                 reject(err);
             }
-           
             resolve(success);
-
         });
-
     });
-
 }
-function queryStream(multichainObject) {
+
+function queryStream(multichainObject, stream, key, timeout) {
     // subscribe not required, autosubscribe=streams set for multichaind
-    multichainObject.listStreamKeyItems({ stream: "myStream", key: key }, (err, success) => {
-        if (err) {
-            console.log("Error: ", err);
-            throw err;
-        }
-        console.log("Success: ", success);
+    var query_status = {
+        status: 'created',
+        time_create: new Date().getTime() / 1000,
+        time_valid: 0,
+        result: null
+    };
+
+    return readDataFromStream(multichainObject, stream, key).then((data) => {
+        query_status.status = 'success';
+        query_status.time_valid = new Date().getTime() / 1000;
+        return Promise.resolve(query_status)
+    }, (err) => {
+        console.log("error in querying data: ", err)
+        query_status.status = 'failed';
+        query_status.time_valid = new Date().getTime() / 1000;
+        return Promise.resolve(query_status)
     })
 }
 
+function readDataFromStream(multichainObject, stream, key) {
+    return new Promise((resolve, reject) => {
+        multichainObject.listStreamKeyItems({ stream: stream, key:key }, (err, success) => {
+            if (err) {
+                console.log("Error: ", err);
+                //throw err;
+                reject(success);
+            }
+            resolve(err);
+        })
+    });
+}
+
 function getResultConfirmation(resultsArray, no_Of_Tx) {
-    console.log("get result conf - multichain e2e")
+
+
     return new Promise(function (resolve, reject) {
 
         var offset_count = 0
@@ -155,13 +170,16 @@ function getResultConfirmation(resultsArray, no_Of_Tx) {
 
         //element is an array of objects with TXID for one round
         resultsArray.forEach(function (internal_element) {
-            map[internal_element.id] = internal_element
+            // console.log('internal_element.id: ',typeof internal_element.id)
+            var index = "x0" + internal_element.id;
+            map[index] = internal_element
             //no_Of_Tx++
         })
 
         var globalArray = []
         globalArray.push(map)
-
+        // console.log("global array: ");
+        // console.log(globalArray[0])
         //	console.log("s: ",s)
         var kafka = require('kafka-node');
         var Consumer = kafka.Consumer;
@@ -188,7 +206,7 @@ function getResultConfirmation(resultsArray, no_Of_Tx) {
         var pendingCounter = 0
 
         consumer.on('message', function (message) {
-           
+
             var buf = new Buffer(message.value); // Read string into a buffer.
             var data = buf.toString('utf-8');
             //console.log("consumer on message",data)
@@ -198,11 +216,11 @@ function getResultConfirmation(resultsArray, no_Of_Tx) {
             //console.log("Block Number ",JSON.parse(data).block.header.number)
             //c//onsole.log("pending counter ",pendingCounter)
 
-            var block = JSON.parse(data).block
+            var block = JSON.parse(data).block.trim()
 
-            var eventTxId = block;
-            //console.log("eventTxId kafka", eventTxId);
-
+            var eventTxId = "x0" + block;
+            // console.log("eventTxId kafka", eventTxId);
+            // console.log("globalArray[0][eventTxId]", globalArray[0][eventTxId]);
             // find in the globalArray if the Id exists or not. It will be present but in any one of the array in global Array
             if (globalArray[0][eventTxId] != undefined || globalArray[0][eventTxId] != null) {
 
@@ -213,7 +231,7 @@ function getResultConfirmation(resultsArray, no_Of_Tx) {
                 globalArray[0][eventTxId] = object
                 pendingCounter++
                 finalresult.push(object)
-                console.log("pendingCounter",pendingCounter)
+                console.log("pendingCounter", pendingCounter)
             } else {
 
                 // not present // ** no need to handle actually**
@@ -236,4 +254,4 @@ function getResultConfirmation(resultsArray, no_Of_Tx) {
         })
     })
 }
-module.exports = { init, installSmartContract, publishToStream, getContext, releaseContext, getResultConfirmation }
+module.exports = { init, installSmartContract, publishToStream, getContext, releaseContext, getResultConfirmation, queryStream }

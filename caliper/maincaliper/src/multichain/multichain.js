@@ -31,6 +31,10 @@ class Multichain extends BlockchainInterface {
         return e2eUtils.publishToStream(context, contractID, args, timeout);
     }
 
+    queryState(context, contractID, contractVer, args, timeout){
+        return e2eUtils.queryStream(context, contractID, args, timeout);
+    }
+
     getResultConfirmation(bcContext,result) {
 		if(result.length <= 0){
 			return Promise.reject(new Error("no transaction found in result array"));

@@ -40,10 +40,9 @@ producer.on('ready', function () {
 })
 
 var server = net.createServer(function(socket) {
-	//socket.write('Echo server\r\n');
-    //socket.pipe(socket);
+
     socket.on('data',(data)=>{
-        //console.log("server",data.toString('utf8'));
+        
         var event_data = {}
         event_data.validTime = new Date().getTime() / 1000;
         console.log("event txid", data.toString('utf8'));
