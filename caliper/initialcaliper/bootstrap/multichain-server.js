@@ -1,9 +1,12 @@
+const async = require('async')
+
 const multichain = require('multichain-node')({
     "port": "999",
     "host": "10.80.39.8",
     "user": "username",
     "pass": "password"
 })
+
 
 /*args[0] - TYPE OF ACTION 
     1 - pre-populate
@@ -15,25 +18,45 @@ args = process.argv.slice(2);
 
 if (args[0] === "1") {
 
-    const promiseArray = [];
+    const requestArray = [];
     const data = "AB";
+
+    requestArray.push(function (callback) {
+        multichain.create({ type: "stream", name: "mystream", open: true }, (err, success) => {
+            if (err) {
+                console.log("Error creating stream: ", err);
+                callback(null, success);
+            }
+            else {
+                console.log("Successfully created stream: ", success);
+                callback(null, success);
+            }
+        })
+    });
+
     console.log("Adding items to stream, please wait..");
 
     for (let i = 0; i < args[1]; i++) {
-        promiseArray.push(new Promise((resolve, reject) => {
+        requestArray.push(function (callback) {
             multichain.publish({ stream: "mystream", key: "account_no" + i, data: data }, (err, success) => {
                 if (err) {
-                    return reject(err);
+                    callback(err, null);
                 }
-                return resolve(success);
-            });
-        }));
+                else {
+                    callback(null, success);
+                }
+            })
+        });
     }
 
-    Promise.all(promiseArray).then((values) => {
-        console.log("Successfully prepopulated caliper with", values.length, "values.");
-    }, ((errors) => {
-        console.log("Failure prepopulation caliper", errors)
-    }));
+
+    async.series(requestArray,
+        function (err, results) {
+            if (err) {
+                console.log("Failure during prepopulation caliper", err)
+                throw err;
+            }
+            console.log("Successfully prepopulated caliper with", results.length, "values.");
+        });
 
 }

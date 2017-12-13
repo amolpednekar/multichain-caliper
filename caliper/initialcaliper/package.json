@@ -12,7 +12,7 @@
   "engine-strict": true,
   "engineStrict": true,
   "dependencies": {
-    "async": "^2.5.0",
+    "async": "^2.6.0",
     "dockerode": "^2.5.0",
     "i": "^0.3.6",
     "multichain-node": "^2.1.6-version1.0.2",
