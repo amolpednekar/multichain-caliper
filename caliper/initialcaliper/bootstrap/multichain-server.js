@@ -48,7 +48,50 @@ if (args[0] === "1") {
 if (args[0] === "2") {
     const requestArray = [];
 
-    
+    console.log(args[1])
+    console.log("Creating & Adding items to stream till", args[1], "blocks, please wait..");
+
+    var rounds = 1;
+    new Promise((resolve, reject) => {
+        multichain.create({ type: "stream", name: "mystream", open: true }, (err, success) => {
+            if (err) {
+                resolve(err);
+            }
+            else {
+                resolve(err);
+            }
+        })
+    }).then((msg) => {
+        console.log(msg)
+        blockFill();
+    })
+
+    function blockFill() {
+        new Promise((resolve, reject) => {
+            getNumberOfBlocks(multichain, resolve, reject);
+        }).then((numberOfBlocks) => {
+            return new Promise((resolve2, reject2) => {
+                console.log("numberOfBlocks>args[1]", numberOfBlocks < args[1], numberOfBlocks, args[1]);
+
+                if (numberOfBlocks >= args[1]) {
+                    return resolve2("Required blocks added");
+                }
+
+                multichain.publish({ stream: streamName, key: "account_no" + rounds++, data: data }, (err, txid) => {
+                    if (err) {
+                        return reject2(err);
+                    }
+                    blockFill();
+                });
+            });
+        }, (error) => {
+            console.log(error);
+        }).then((successMessage) => {
+            console.log("successMessage", successMessage);
+        }, (errorMessage) => {
+            console.log("errorMessage", errorMessage)
+        })
+    }
 
 }
 
