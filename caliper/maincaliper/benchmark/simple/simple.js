@@ -30,7 +30,7 @@ kafka_child.on('exit', function(){
     console.log('client exited');
 });
 
-kafka_child.send({msg:"hello"});
+kafka_child.send({msg:config_path});
 
 // use default framework to run the tests
 var framework = require('../../src/comm/bench-flow.js');

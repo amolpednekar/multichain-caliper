@@ -7,7 +7,9 @@ const multichain = require('multichain-node')({
     "pass": "password"
 })
 
-
+const streamName = "mystream";
+const data = "AB";
+var numberOfBlocks;
 /*args[0] - TYPE OF ACTION 
     1 - pre-populate
 */
@@ -19,36 +21,18 @@ args = process.argv.slice(2);
 if (args[0] === "1") {
 
     const requestArray = [];
-    const data = "AB";
 
     requestArray.push(function (callback) {
-        multichain.create({ type: "stream", name: "mystream", open: true }, (err, success) => {
-            if (err) {
-                console.log("Error creating stream: ", err);
-                callback(null, success);
-            }
-            else {
-                console.log("Successfully created stream: ", success);
-                callback(null, success);
-            }
-        })
+        createStream(multichain, streamName, callback);
     });
 
-    console.log("Adding items to stream, please wait..");
+    console.log("Creating & Adding items to stream, please wait..");
 
     for (let i = 0; i < args[1]; i++) {
         requestArray.push(function (callback) {
-            multichain.publish({ stream: "mystream", key: "account_no" + i, data: data }, (err, success) => {
-                if (err) {
-                    callback(err, null);
-                }
-                else {
-                    callback(null, success);
-                }
-            })
+            publishToStream(multichain, streamName, "account_no" + i, value, callback)
         });
     }
-
 
     async.series(requestArray,
         function (err, results) {
@@ -59,4 +43,46 @@ if (args[0] === "1") {
             console.log("Successfully prepopulated caliper with", results.length, "values.");
         });
 
+}
+
+if (args[0] === "2") {
+    const requestArray = [];
+
+    
+
+}
+
+function getNumberOfBlocks(multichain, resolve, reject) {
+    multichain.getBlockchainInfo((err, success) => {
+        if (err) {
+            console.log("Error: ", err);
+            return reject(err);
+        }
+        return resolve(success.blocks);
+    })
+}
+
+function createStream(multichain, streamName, callback) {
+    multichain.create({ type: "stream", name: "mystream", open: true }, (err, success) => {
+        if (err) {
+            console.log("Error creating stream: ", err);
+            callback(null, success);
+        }
+        else {
+            console.log("Successfully created stream: ", success);
+            callback(null, success);
+        }
+    })
+}
+
+function publishToStream(multichain, streamName, key, value, callback) {
+    console.log("called publishtostream")
+    multichain.publish({ stream: streamName, key: key, data: data }, (err, success) => {
+        if (err) {
+            callback(err, null);
+        }
+        else {
+            callback(null, success);
+        }
+    })
 }
