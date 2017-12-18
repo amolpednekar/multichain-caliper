@@ -46,12 +46,13 @@ if (args[0] === "1") {
 }
 
 if (args[0] === "2") {
-    const requestArray = [];
+    
+    var rounds = 1;
 
     console.log(args[1])
     console.log("Creating & Adding items to stream till", args[1], "blocks, please wait..");
 
-    var rounds = 1;
+    // Create stream if !exists
     new Promise((resolve, reject) => {
         multichain.create({ type: "stream", name: "mystream", open: true }, (err, success) => {
             if (err) {
@@ -66,6 +67,7 @@ if (args[0] === "2") {
         blockFill();
     })
 
+    // Fill blocks based on cmd line args
     function blockFill() {
         new Promise((resolve, reject) => {
             getNumberOfBlocks(multichain, resolve, reject);
