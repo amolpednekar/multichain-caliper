@@ -1,0 +1,17 @@
+version: "3"
+services:
+  slavenode2:
+    container_name: slavenode2
+    image: amolpednekar/multichain_node:v2
+    environment:
+      - CHAINNAME=dockerchain
+      - MASTERNODE_IP=10.244.5.41
+      - EVENT_LISTENER_IP=10.80.39.8
+    volumes:
+      - ./node-scripts/runchain_caliper_slave.sh:/root/runchain.sh
+      - ./node-scripts/multichain_slave.conf:/root/.multichain/dockerchain/multichain.conf
+      - ./server:/root/server
+    command: bash /root/runchain.sh
+    ports:
+      - "2000:2447"
+      - "1999:2448"

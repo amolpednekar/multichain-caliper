@@ -5,6 +5,5 @@
 # echo "script.sh triggered"
 # echo $1 $2
 if [ $2 -eq 1 ]; then
-#    echo $1 $2
-    echo $1 | nc 10.244.51.108 1339
+    echo $1 | nc $EVENT_LISTENER_IP 1339
 fi
