@@ -76,7 +76,7 @@ function getContext(config_path) {
     fileData = JSON.parse(fileData);
     let i = Math.floor(Math.random() * max);
     console.log("node i ", i)
-    let multichainObject = multichain(fileData.multichain.network[0]);
+    let multichainObject = multichain(fileData.multichain.network[i]);
     return Promise.resolve(multichainObject);
 }
 

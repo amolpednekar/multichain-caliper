@@ -3,13 +3,22 @@
     "network": [
       {
         "port": "999",
-        "host": "10.80.39.8",
+        "host": "10.244.5.41",
         "user": "username",
         "pass": "password"
-      },
-      {
+      }, {
         "port": "1999",
-        "host": "10.80.39.8",
+        "host": "10.244.5.42",
+        "user": "username",
+        "pass": "password"
+      }, {
+        "port": "1999",
+        "host": "10.244.5.43",
+        "user": "username",
+        "pass": "password"
+      }, {
+        "port": "1999",
+        "host": "10.244.5.44",
         "user": "username",
         "pass": "password"
       }],
