@@ -47,7 +47,7 @@ class MultichainListener {
             });
 
             // start listener
-            server.listen(1339, '10.244.51.108');
+            server.listen(1339, '10.244.48.72');
         })
 
         self.producer.on('error', function (error) {

@@ -74,9 +74,8 @@ function getContext(config_path) {
     var data = fs.readFileSync(config_path);
     fileData = new Buffer(data).toString('utf-8');
     fileData = JSON.parse(fileData);
-    let i = Math.floor(Math.random() * max);
-    console.log("node i ", i)
-    let multichainObject = multichain(fileData.multichain.network[i]);
+    // this client sends to master peer
+    let multichainObject = multichain(fileData.multichain.network[0]);
     return Promise.resolve(multichainObject);
 }
 
@@ -209,6 +208,7 @@ function getResultConfirmation(resultsArray, no_Of_Tx) {
 
             var buf = new Buffer(message.value); // Read string into a buffer.
             var data = buf.toString('utf-8');
+            console.log("data", data)
             //console.log("consumer on message",data)
             offset_count = message.offset
             fs.writeFileSync("offset.txt", offset_count)
