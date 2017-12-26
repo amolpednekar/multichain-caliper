@@ -142,7 +142,7 @@ function queryStream(multichainObject, stream, key, timeout) {
 
 function readDataFromStream(multichainObject, stream, key) {
     return new Promise((resolve, reject) => {
-        multichainObject.listStreamKeyItems({ stream: stream, key:key }, (err, success) => {
+        multichainObject.listStreamKeyItems({ stream: stream, key: key }, (err, success) => {
             if (err) {
                 console.log("Error: ", err);
                 //throw err;
@@ -215,35 +215,35 @@ function getResultConfirmation(resultsArray, no_Of_Tx) {
 
             //console.log("Block Number ",JSON.parse(data).block.header.number)
             //c//onsole.log("pending counter ",pendingCounter)
+            data = JSON.parse(data);
+            if (!data.block.extraData) {
+                var block = data.block.trim()
 
-            var block = JSON.parse(data).block.trim()
+                var eventTxId = "x0" + block;
+                // console.log("eventTxId kafka", eventTxId);
+                // console.log("globalArray[0][eventTxId]", globalArray[0][eventTxId]);
+                // find in the globalArray if the Id exists or not. It will be present but in any one of the array in global Array
+                if (globalArray[0][eventTxId] != undefined || globalArray[0][eventTxId] != null) {
 
-            var eventTxId = "x0" + block;
-            // console.log("eventTxId kafka", eventTxId);
-            // console.log("globalArray[0][eventTxId]", globalArray[0][eventTxId]);
-            // find in the globalArray if the Id exists or not. It will be present but in any one of the array in global Array
-            if (globalArray[0][eventTxId] != undefined || globalArray[0][eventTxId] != null) {
+                    // present at index 0
+                    var object = globalArray[0][eventTxId]
+                    object.time_valid = data.validTime;
+                    object.status = "success";
+                    globalArray[0][eventTxId] = object
+                    pendingCounter++
+                    finalresult.push(object)
+                    console.log("pendingCounter", pendingCounter)
+                } else {
 
-                // present at index 0
-                var object = globalArray[0][eventTxId]
-                object.time_valid = JSON.parse(data).validTime;
-                object.status = "success";
-                globalArray[0][eventTxId] = object
-                pendingCounter++
-                finalresult.push(object)
-                console.log("pendingCounter", pendingCounter)
-            } else {
+                    // not present // ** no need to handle actually**
 
-                // not present // ** no need to handle actually**
+                }
+                if (pendingCounter == no_Of_Tx) {
+                    //console.log("All resolved")
+                    resolve(finalresult)
+                }
 
             }
-            if (pendingCounter == no_Of_Tx) {
-                //console.log("All resolved")
-                resolve(finalresult)
-            }
-
-
-
         });
 
 

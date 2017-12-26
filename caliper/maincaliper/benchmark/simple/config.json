@@ -7,15 +7,10 @@
     "clients": 1,
     "rounds": [{
         "cmd" : "open",
-        "txNumbAndTps" : [[1000,100]],
+        "txNumbAndTps" : [[3000,300]],
         "arguments": {  "money": 10000 },
         "callback" : "benchmark/simple/multichain-open.js",
         "out" : "accounts"
-      },{
-        "cmd" : "query",
-        "txNumbAndTps" : [[1000,100]],
-        "arguments": {  "accounts":  "*#out" },
-        "callback" : "benchmark/simple/multichain-query.js"
       }]
   },
   "monitor": {

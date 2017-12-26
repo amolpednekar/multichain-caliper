@@ -29,7 +29,7 @@ function init(config_path) {
         }));
 
         //grant send permissions to slave nodes
-        for (let i = 1; i <= max; i++) {
+        for (let i = 1; i <= 1; i++) {
             multichainObject = multichain(fileData.multichain.network[i]);
 
             promisesArray.push(

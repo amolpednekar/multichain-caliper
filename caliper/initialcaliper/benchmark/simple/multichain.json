@@ -2,12 +2,12 @@
   "multichain": {
     "network": [
       {
-        "port": "999",
+        "port": "5599",
         "host": "10.244.5.41",
         "user": "username",
         "pass": "password"
       }, {
-        "port": "1999",
+        "port": "5699",
         "host": "10.244.5.42",
         "user": "username",
         "pass": "password"
