@@ -29,28 +29,29 @@ function init(config_path) {
         }));
 
         //grant send permissions to slave nodes
-        for (let i = 1; i <= 1; i++) {
-            multichainObject = multichain(fileData.multichain.network[i]);
+        // for (let i = 1; i <= 1; i++) {
+        //     multichainObject = multichain(fileData.multichain.network[i]);
 
-            promisesArray.push(
-                new Promise((resolve2, reject2) => {
-                    multichainObject.listAddresses((err, info) => {
-                        if (err) {
-                            throw err;
-                        }
-                        multichainObject = multichain(fileData.multichain.network[0]);
-                        multichainObject.grant({ addresses: info[0].address, permissions: "send" }, (err, info2) => {
-                            if (err) {
-                                throw err;
-                                return resolve2(err);
+        //     promisesArray.push(
+        //         new Promise((resolve2, reject2) => {
+        //             multichainObject.listAddresses((err, info) => {
+        //                 if (err) {
+        //                     throw err;
+        //                 }
+        //                 multichainObject = multichain(fileData.multichain.network[0]);
+        //                 multichainObject.grant({ addresses: info[0].address, permissions: "send" }, (err, info2) => {
+        //                     if (err) {
+        //                         console.log("init caliper master", err)
+        //                         throw err;
+        //                         return resolve2(err);
 
-                            }
-                            console.log("granted permission", info2);
-                            return resolve2(info2);
-                        })
-                    })
-                }));
-        }
+        //                     }
+        //                     console.log("granted permission", info2);
+        //                     return resolve2(info2);
+        //                 })
+        //             })
+        //         }));
+        // }
 
         console.log("promisesArray", promisesArray)
 
@@ -73,7 +74,7 @@ function installSmartContract() {
 
 function getContext(config_path) {
     var data = fs.readFileSync(config_path);
-    let i = Math.random() * ((max+1) - min) + min;
+    let i = Math.random() * ((max + 1) - min) + min;
     let multichainObject = multichain(data.multichain.network[i]);
     return multichainObject;
 }

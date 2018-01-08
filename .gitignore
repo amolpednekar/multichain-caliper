@@ -1,7 +1,8 @@
 server/node_modules/
 node-files/
 caliper/initialcaliper/node_modules
-caliper/maincaliper/node_modules
+caliper/initialcaliper/benchmark/simple/*.json
 caliper/maincaliper/benchmark/simple/*.json
+caliper/maincaliper/node_modules
 caliper/maincaliper/benchmark/simple/*.csv
 caliper/maincaliper/benchmark/simple/*.txt

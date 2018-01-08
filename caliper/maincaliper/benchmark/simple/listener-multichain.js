@@ -17,17 +17,14 @@ class MultichainListener {
     getBlocks() {
         var self = this
         self.producer.on('ready', function () {
-
             var server = net.createServer(function (socket) {
-
                 socket.on('data', (data) => {
-
                     var event_data = {}
                     event_data.validTime = new Date().getTime() / 1000;
-                    console.log("event txid", data.toString('utf8'));
-                    event_data.block = data.toString('utf8');
+                    event_data.blockHash = data.toString('utf8');
 
-                    // TODO:convert to bytes and then store
+                    console.log("blockhash: ", data.toString('utf8'));
+
                     var payload = [{
                         topic: self.kafka_config.topic,
                         messages: JSON.stringify(event_data),
@@ -43,11 +40,15 @@ class MultichainListener {
                             // console.log('result: ', result)
                         }
                     });
+
+
                 })
             });
 
             // start listener
-            server.listen(1339, '10.244.48.72');
+            server.listen(1440, '10.244.51.108');
+
+            server.timeout = 0;
         })
 
         self.producer.on('error', function (error) {
