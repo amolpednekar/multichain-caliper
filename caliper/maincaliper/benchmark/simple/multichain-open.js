@@ -27,7 +27,7 @@ module.exports.init = function(blockchain, context, args) {
 }
 
 module.exports.run = function() {
-    key = "key"+index;
+    key = "client1_key"+index;
     index = index + 1;
     accounts.push(key);
     return bc.invokeSmartContract(contx, 'mystream', 'v0', [{key:key, data:valueHex}], 120);

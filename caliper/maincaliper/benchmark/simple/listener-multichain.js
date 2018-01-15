@@ -46,7 +46,7 @@ class MultichainListener {
             });
 
             // start listener
-            server.listen(1440, '10.244.51.108');
+            server.listen(1440, '10.244.48.72');
 
             server.timeout = 0;
         })
