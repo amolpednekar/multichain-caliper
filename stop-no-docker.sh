@@ -1,3 +1,3 @@
 #!/bin/bash
 
-rm -rf /home/admin1/multichain-caliper/node-data
+rm -rf /root/Multichain/multichain-caliper/node-data

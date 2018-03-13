@@ -2,14 +2,15 @@ version: "3"
 services:
   masternode:
     container_name: masternode
-    image: amolpednekar/multichain_node:v2
+    image: amolpednekar/multichain:v1.0.2
     environment:
       - CHAINNAME=dockerchain
-      - EVENT_LISTENER_IP=10.244.51.108
+      - EVENT_LISTENER_IP=10.244.48.72
+    #  - EVENT_LISTENER_IP=10.244.51.108
     volumes:
-      - ./node-scripts/runchain_caliper_master.sh:/root/runchain.sh
-      - ./server:/root/server
-    # - ./node-files/dockerchain:/root/.multichain
+      - ../node-scripts/runchain_caliper_master.sh:/root/runchain.sh
+      - ../server:/root/server
+      #- ../node-data/dockerchain:/root/.multichain
     command: bash /root/runchain.sh
     ports:
       - "1000:1000"

@@ -39,17 +39,13 @@ if [ ! -d /root/.multichain/$CHAINNAME ]; then
     sed -i "s/^default-rpc-port.*/default-rpc-port = $RPC_PORT/" /root/.multichain/$CHAINNAME/params.dat
     sed -i "s/^chain-name.*/chain-name = $CHAINNAME/" /root/.multichain/$CHAINNAME/params.dat
     sed -i "s/^chain-description.*/chain-description = MultiChain $CHAINNAME/" /root/.multichain/$CHAINNAME/params.dat
-    sed -i "s/^anyone-can-connect.*/anyone-can-connect = true/" /root/.multichain/$CHAINNAME/params.dat
-   
-    # Loop over all variables that start with PARAM_
-    #   PARAM_BLOCKTIME='target-block-time|40';
-    #   PARAM_CONNECT='anyone-can-connect|true';
-    ( set -o posix ; set ) | sed -n '/^PARAM_/p' | while read PARAM; do
-        IFS='=' read -ra KV <<< "$PARAM"
-        IFS='|' read -ra KV <<< "${!KV[0]}"
-        sed -i "s/^${KV[0]}.*/${KV[0]} = ${KV[1]}/" /root/.multichain/$CHAINNAME/params.dat
-    done
-
+    # sed -i "s/^anyone-can-connect.*/anyone-can-connect = true/" /root/.multichain/$CHAINNAME/params.dat
+    sed -i "s/^target-block-time.*/target-block-time = 2/" /root/.multichain/$CHAINNAME/params.dat
+    sed -i "s/^mine-empty-rounds.*/ mine-empty-rounds = -1/" /root/.multichain/$CHAINNAME/params.dat
+    sed -i "s/^setup-first-blocks.*/setup-first-blocks = 3/" /root/.multichain/$CHAINNAME/params.dat
+    sed -i "s/^maximum-block-size.*/maximum-block-size = 1000000000/" /root/.multichain/$CHAINNAME/params.dat
+    sed -i "s/^max-std-op-return-size.*/max-std-op-return-size = 67108864/" /root/.multichain/$CHAINNAME/params.dat
+    sed -i "s/^max-std-tx-size.*/max-std-tx-size = 100000000/" /root/.multichain/$CHAINNAME/params.dat
 fi
 
 cat /root/.multichain/$CHAINNAME/params.dat
@@ -69,4 +65,4 @@ cp /root/.multichain/$CHAINNAME/multichain.conf /root/.multichain/multichain.con
 
 chmod 777 /root/server/event-listener-websockets/script.sh
 
-multichaind $CHAINNAME -autosubscribe=streams -walletnotify="/root/server/event-listener-websockets/script.sh %s %c"
+multichaind $CHAINNAME -debug=mcapi -rpcthreads=9000 -printtoconsole -rpckeepalive=1 -autosubscribe=streams -blocknotify="/root/server/event-listener-websockets/script.sh %s"
