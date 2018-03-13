@@ -9,4 +9,4 @@ chmod 777 /root/server/event-listener-websockets/script.sh
 
 #ip=`getent hosts masternode | awk -F' ' '{print $1}'`
 
-multichaind -port=2447 -rpcport=2448 dockerchain@$MASTERNODE_IP:1000 -autosubscribe=streams -walletnotify="/root/server/event-listener-websockets/script.sh %s %c"
+multichaind -port=2447 -rpcport=2448 dockerchain@$MASTERNODE_IP:1000 -debug=mcapi -printtoconsole -rpcthreads=9000 -rpckeepalive=1 -autosubscribe=streams -blocknotify="/root/server/event-listener-websockets/script.sh %s"

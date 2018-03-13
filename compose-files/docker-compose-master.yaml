@@ -2,7 +2,7 @@ version: "3"
 services:
   masternode:
     container_name: masternode
-    image: amolpednekar/multichain:v1.0.2
+    image: amolpednekar/multichain:v1.0.4
     environment:
       - CHAINNAME=dockerchain
       - EVENT_LISTENER_IP=10.244.48.72

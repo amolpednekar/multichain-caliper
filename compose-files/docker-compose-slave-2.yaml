@@ -2,7 +2,7 @@ version: "3"
 services:
   slavenode2:
     container_name: slavenode2
-    image: amolpednekar/multichain_node:v2
+    image: amolpednekar/multichain:v1.0.4
     environment:
       - CHAINNAME=dockerchain
       - MASTERNODE_IP=10.244.5.41
